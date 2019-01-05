@@ -36,7 +36,7 @@ class Portfolio(object):
 
 class ThompsonSamplingPortfolio(Portfolio):
     def __init__(self, num_sources, initial_wealth):
-        super(ThompsonSamplingPortfolio, self).__init__(num_sources, initial_wealth, 'bayesian')
+        super(ThompsonSamplingPortfolio, self).__init__(num_sources, initial_wealth, 'thompson sampling')
 
     def mean_counter(self, index):
         total_sum = sum(self._success) + self.num_sources

@@ -67,10 +67,10 @@ def main():
     for i, estimate in enumerate(estimates):
         log.info('%i: %f, %f, %f' % (i, estimate, probabilities[i], odds[i]))
 
-    bandit_cagr = cagr(initial_wealth, thompson_samp_portfolio.wealth, num_races)
-    optimal_cagr = cagr(initial_wealth, optimal_portfolio.wealth, num_races)
-    log.info('Final CAGR (Thompson): {:.2f}%'.format(bandit_cagr))
-    log.info('Final CAGR (optimal): {:.2f}%'.format(optimal_cagr))
+    thompson_samp_cgr = cagr(initial_wealth, thompson_samp_portfolio.wealth, num_races)
+    optimal_cgr = cagr(initial_wealth, optimal_portfolio.wealth, num_races)
+    log.info('Final CGR (Thompson): {:.2f}%'.format(thompson_samp_cgr))
+    log.info('Final CGR (optimal): {:.2f}%'.format(optimal_cgr))
 
     plot_wealth(thompson_samp_portfolio_history, optimal_portfolio_history, num_races)
 
