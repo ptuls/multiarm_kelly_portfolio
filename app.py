@@ -26,10 +26,6 @@ log.addHandler(ch)
 def main():
     num_trials = 2000
 
-    # probabilities = random(10)
-    # probabilities /= np.sum(probabilities)
-    # odds = random(10) * 10.0
-
     probabilities = np.array([0.5, 0.1, 0.4])
     odds = np.array([1.3, 10.0, 3.0])
 
