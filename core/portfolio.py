@@ -34,9 +34,9 @@ class Portfolio(object):
         log.info('Net wealth change: {:.2f}%'.format(net_wealth_change_pct))
 
 
-class BayesianPortfolio(Portfolio):
+class ThompsonSamplingPortfolio(Portfolio):
     def __init__(self, num_sources, initial_wealth):
-        super(BayesianPortfolio, self).__init__(num_sources, initial_wealth, 'bayesian')
+        super(ThompsonSamplingPortfolio, self).__init__(num_sources, initial_wealth, 'bayesian')
 
     def mean_counter(self, index):
         total_sum = sum(self._success) + self.num_sources

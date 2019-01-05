@@ -9,7 +9,7 @@ import numpy as np
 from numpy.random import choice
 
 from core.kelly import compute_optimal_allocation
-from core.portfolio import BayesianPortfolio, OptimalPortfolio
+from core.portfolio import ThompsonSamplingPortfolio, OptimalPortfolio
 from core.util import cagr
 import matplotlib.pyplot as plt
 
@@ -24,24 +24,24 @@ log.addHandler(ch)
 
 
 def main():
-    num_races = 2000
+    num_races = 10000
 
     probabilities = np.array([0.5, 0.1, 0.4])
     odds = np.array([1.3, 10.0, 3.0])
 
     initial_wealth = 1
     burn_in_period = round(0.3 * num_races)
-    bayesian_portfolio = BayesianPortfolio(len(odds), initial_wealth)
+    thompson_samp_portfolio = ThompsonSamplingPortfolio(len(odds), initial_wealth)
     optimal_portfolio = OptimalPortfolio(len(odds), initial_wealth)
 
-    bayesian_portfolio_history = []
+    thompson_samp_portfolio_history = []
     optimal_portfolio_history = []
     for race in range(num_races):
         log.info('Trial: %d' % (race + 1))
-        bayesian_portfolio.allocation = compute_optimal_allocation(
-            bayesian_portfolio,
+        thompson_samp_portfolio.allocation = compute_optimal_allocation(
+            thompson_samp_portfolio,
             odds,
-            np.asarray(bayesian_portfolio.draw())
+            np.asarray(thompson_samp_portfolio.draw())
         )
         optimal_portfolio.allocation = compute_optimal_allocation(
             optimal_portfolio,
@@ -51,33 +51,33 @@ def main():
 
         win_index = simulate(probabilities)
         log.info('Horse %d wins' % win_index)
-        bayesian_portfolio.update(win_index)
+        thompson_samp_portfolio.update(win_index)
         optimal_portfolio.update(win_index)
         if race > burn_in_period:
-            bayesian_portfolio.update_wealth(win_index, odds)
+            thompson_samp_portfolio.update_wealth(win_index, odds)
             optimal_portfolio.update_wealth(win_index, odds)
 
-            bayesian_portfolio_history.append(bayesian_portfolio.wealth)
+            thompson_samp_portfolio_history.append(thompson_samp_portfolio.wealth)
             optimal_portfolio_history.append(optimal_portfolio.wealth)
 
     log.info('-----------------------------')
     log.info('estimate, true, odds')
-    estimates = bayesian_portfolio.mean()
+    estimates = thompson_samp_portfolio.mean()
     for i, estimate in enumerate(estimates):
         log.info('%i: %f, %f, %f' % (i, estimate, probabilities[i], odds[i]))
 
-    bandit_cagr = cagr(initial_wealth, bayesian_portfolio.wealth, num_races)
+    bandit_cagr = cagr(initial_wealth, thompson_samp_portfolio.wealth, num_races)
     optimal_cagr = cagr(initial_wealth, optimal_portfolio.wealth, num_races)
     log.info('Final CAGR: {:.2f}%'.format(bandit_cagr))
     log.info('Final CAGR (optimal): {:.2f}%'.format(optimal_cagr))
 
-    plot_wealth(bayesian_portfolio_history, optimal_portfolio_history, num_races, burn_in_period)
+    plot_wealth(thompson_samp_portfolio_history, optimal_portfolio_history, num_races, burn_in_period)
 
 
-def plot_wealth(bayesian_portfolio_history, optimal_portfolio_history, num_races, burn_in_period):
+def plot_wealth(thompson_samp_portfolio_history, optimal_portfolio_history, num_races, burn_in_period):
     plot_range = np.arange(1, num_races - burn_in_period, 1)
     fig, ax = plt.subplots()
-    ax.semilogy(plot_range, bayesian_portfolio_history, 'b', label='Bayesian')
+    ax.semilogy(plot_range, thompson_samp_portfolio_history, 'b', label='Bayesian')
     ax.semilogy(plot_range, optimal_portfolio_history, 'r', label='Optimal')
     plt.xlabel('Trial')
     plt.ylabel('Wealth')
