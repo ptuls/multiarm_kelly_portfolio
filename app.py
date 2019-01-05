@@ -7,8 +7,8 @@ import sys
 
 import numpy as np
 from numpy.random import choice
-from scipy.optimize import minimize
 
+from core.kelly import compute_optimal_allocation
 from core.portfolio import BayesianPortfolio, OptimalPortfolio
 from core.util import cagr
 import matplotlib.pyplot as plt
@@ -87,23 +87,6 @@ def plot_wealth(bayesian_portfolio_history, optimal_portfolio_history, num_races
 
 def simulate(probabilities):
     return choice(len(probabilities), p=probabilities)
-
-
-def objective(frac, probs, odds, eps=1e-20):
-    return -np.dot(probs, np.log2(frac[0] + frac[1:] * odds + eps))
-
-
-def compute_optimal_allocation(portfolio, odds, probs):
-    current_allocation = np.asarray(portfolio.allocation)
-    nonnegative_constraints = tuple([(0.0, 1.0) for _ in range(len(current_allocation))])
-    optimum = minimize(objective,
-                       current_allocation,
-                       args=(probs, odds),
-                       bounds=nonnegative_constraints,
-                       constraints=({'type': 'eq', 'fun': lambda x: np.sum(x) - 1.})
-                       )
-    log.info('Optimal Kelly exponent: {:.4f}'.format(-optimum.fun))
-    return optimum.x
 
 
 if __name__ == '__main__':
