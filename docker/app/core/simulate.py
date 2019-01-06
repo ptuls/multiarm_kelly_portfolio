@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import logging
+
 import numpy as np
+from kelly import compute_optimal_allocation
+from portfolio import ThompsonSamplingPortfolio, OptimalPortfolio
 from numpy.random import choice
 
-from core.kelly import compute_optimal_allocation
-from core.portfolio import ThompsonSamplingPortfolio, OptimalPortfolio
-from core.util import cgr
+from util import cgr
 
 log = logging.getLogger()
 
