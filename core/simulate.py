@@ -25,16 +25,19 @@ def simulate(
     total_trials = num_races + burn_in_period
     for trial in range(total_trials):
         log.info('Trial: %d' % (trial + 1))
-        thompson_samp_portfolio.allocation = compute_optimal_allocation(
+        thompson_samp_portfolio.allocation, thompson_samp_kelly_exponent = compute_optimal_allocation(
             thompson_samp_portfolio,
             odds,
             np.asarray(thompson_samp_portfolio.draw())
         )
-        optimal_portfolio.allocation = compute_optimal_allocation(
+        optimal_portfolio.allocation, optimal_kelly_exponent = compute_optimal_allocation(
             optimal_portfolio,
             odds,
             probabilities
         )
+
+        log.info('Thompson sampling Kelly exponent : {:.4f}'.format(thompson_samp_kelly_exponent))
+        log.info('Optimal Kelly exponent : {:.4f}'.format(optimal_kelly_exponent))
 
         win_index = race_result(probabilities)
         log.info('Horse %d wins' % win_index)

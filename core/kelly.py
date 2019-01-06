@@ -19,5 +19,4 @@ def compute_optimal_allocation(portfolio, odds, probs):
                        bounds=nonnegative_constraints,
                        constraints=({'type': 'eq', 'fun': lambda x: np.sum(x) - 1.})
                        )
-    log.info('Optimal Kelly exponent: {:.4f}'.format(-optimum.fun))
-    return optimum.x
+    return optimum.x, -optimum.fun
