@@ -27,16 +27,14 @@ over all *p(i)*, *i=1, 2, ..., k* is equal to 1. This is no longer equivalent to
 as studied in introductory multiarm bandit literature due to the dependency between the probabilities. Instead, the 
 conjugate prior in this scenario is the [Dirichlet distribution](https://en.wikipedia.org/wiki/Dirichlet_distribution).
 
-Each horse has an *odd* associated with it, determining the payout if a bet is place on the horse and the horse wins.
+Horses have *odds* associated with each of them, determining the payout if a bet is place on the horse and the horse wins.
 According to the Kelly criterion, a bet is only placed if the probability and the odd exceeds a certain threshold in
 a sub-fair odds scenario. Essentially, computation of the Kelly criterion under this scenario results in a 
 water-filling algorithm (see Chapter 6 of 
 [Elements of Information Theory, 2nd ed.](https://www.wiley.com/en-us/Elements+of+Information+Theory%2C+2nd+Edition-p-9780471241959)).
 
 A *burn-in* period is required to get a reasonably good estimate of the probabilities before betting begins. Typically
-about 100 trials are required, but this is subject to more work. A final compound growth rate (CGR) over the total
+about 100 trials are required, but this is subject to more investigation. A final compound growth rate (CGR) over the total
 number of races the bettor has participated is computed. A plot of the growth of the wealth of the bettor under
 the Thompson sampling portfolio against the optimal portfolio, i.e., where the bettor has knowledge of the exact
 winning probabilities, will be plotted.
-
-

@@ -1,14 +1,9 @@
 # -*- coding: utf-8 -*-
-import logging
-
 import numpy as np
 from kelly import compute_optimal_allocation
 from portfolio import ThompsonSamplingPortfolio, OptimalPortfolio
 from numpy.random import choice
-
 from util import cgr
-
-log = logging.getLogger()
 
 
 def simulate(
@@ -16,7 +11,8 @@ def simulate(
     probabilities,
     odds,
     num_races,
-    burn_in_period
+    burn_in_period,
+    log
 ):
     thompson_samp_portfolio = ThompsonSamplingPortfolio(len(odds), initial_wealth)
     optimal_portfolio = OptimalPortfolio(len(odds), initial_wealth)

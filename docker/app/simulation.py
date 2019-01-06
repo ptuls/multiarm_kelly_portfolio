@@ -2,23 +2,12 @@
 # -*- coding: utf-8 -*-
 import logging
 import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 from core.simulate import simulate
 
-log = logging.getLogger()
-log.setLevel(logging.INFO)
 
-ch = logging.StreamHandler(sys.stdout)
-ch.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-log.addHandler(ch)
-
-
-def main():
+def main(log):
     num_races = 10000
 
     probabilities = np.array([0.5, 0.1, 0.4])
@@ -31,7 +20,8 @@ def main():
         probabilities,
         odds,
         num_races,
-        burn_in_period
+        burn_in_period,
+        log
     )
 
     log.info('Final CGR (Thompson): {:.2f}%'.format(thompson_samp_cgr))
@@ -50,5 +40,18 @@ def plot_wealth(thompson_samp_portfolio_history, optimal_portfolio_history, num_
     plt.show()
 
 
+def create_logger():
+    log = logging.getLogger()
+    log.setLevel(logging.INFO)
+
+    ch = logging.StreamHandler(sys.stdout)
+    ch.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+    log.addHandler(ch)
+    return log
+
+
 if __name__ == '__main__':
-    main()
+    logger = create_logger()
+    main(logger)
