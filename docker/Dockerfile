@@ -8,14 +8,14 @@ RUN apt-get update && \
 
 USER $NB_UID
 
-COPY app/requirements.txt /app/requirements.txt
+COPY requirements.txt requirements.txt
 
 # Upgrade pip and wheel.
 # Install requirements using pip, but they get installed to conda's space :D
 # Generate a jupyter config then unceremoniously change it to increase the kernel activity timeout.
 # Enable notebook extensions.
 RUN pip install -U pip wheel && \
-    pip install -r /app/requirements.txt && \
+    pip install -r requirements.txt && \
     yes | jupyter notebook --generate-config && \
     echo "\nc.MappingKernelManager.kernel_info_timeout = 600\n" >> /home/jovyan/.jupyter/jupyter_notebook_config.py && \
     echo "\nc.NotebookApp.allow_remote_access = True\n" >> /home/jovyan/.jupyter/jupyter_notebook_config.py && \
