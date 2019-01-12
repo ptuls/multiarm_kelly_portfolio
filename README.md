@@ -1,6 +1,6 @@
-# Kelly Allocation with Multiarm Bandits
+# Kelly Allocation with Multi-armed Bandits
 
-Simulating the combination of a solution of the multiarm bandits problem, Thompson sampling, with the Kelly criterion 
+Simulating the combination of a solution of the multi-armed bandits problem, Thompson sampling, with the Kelly criterion 
 for portfolio allocation.
 
 ## Brief overview
@@ -17,14 +17,14 @@ and since the criterion maximizes the wealth doubling exponent, mistakes made in
 easily ruin the bettor over time.
 
 For concreteness, we cast the problem to the specific problem of betting on horses at a race track.
-In order to estimate the probabilities, we use a known solution of the multiarm bandit problem 
+In order to estimate the probabilities, we use a known solution of the multi-armed bandit problem 
 called [Thompson sampling](https://www.dropbox.com/s/yhn9prnr5bz0156/1933-thompson.pdf).
 
 ## Simulation details
 
-In this simulator, given *k* horses, each horse *i* has a probability of winning *p(i)*. The sum of all probabilties
-over all *p(i)*, *i=1, 2, ..., k* is equal to 1. This is no longer equivalent to the classic Beta-Bernoulli scenario
-as studied in introductory multiarm bandit literature due to the dependency between the probabilities. Instead, the 
+In this simulator, given *k* horses, each horse *i* has a probability of winning *p(i)*. The sum of all probabilities
+*p(i)*, *i=1, 2, ..., k* is equal to 1. The Thompson sampling solution is no longer equivalent to the classic Beta-Bernoulli case
+as studied in introductory multi-armed bandit literature, due to the dependency between the probabilities. Instead, the 
 conjugate prior in this scenario is the [Dirichlet distribution](https://en.wikipedia.org/wiki/Dirichlet_distribution).
 
 Horses have *odds* associated with each of them, determining the payout if a bet is place on the horse and the horse wins.

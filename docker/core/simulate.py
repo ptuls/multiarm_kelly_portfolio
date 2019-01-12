@@ -4,7 +4,6 @@ import numpy as np
 from numpy.random import choice
 from core.kelly import compute_optimal_allocation
 from core.portfolio import ThompsonSamplingPortfolio, OptimalPortfolio
-from core.util import cgr
 
 
 def plot_wealth(
@@ -19,6 +18,7 @@ def plot_wealth(
     plt.xlabel('Race')
     plt.ylabel('Wealth ($)')
     plt.legend(loc='upper left')
+    plt.figure(figsize=(20, 20))
     plt.show()
 
 
@@ -37,7 +37,7 @@ def simulate(
     optimal_portfolio_history = []
     total_trials = num_races + burn_in_period
     for trial in range(total_trials):
-        log.info('Trial: %d' % (trial + 1))
+        log.info('Race: %d' % (trial + 1))
         thompson_samp_portfolio.allocation, thompson_samp_kelly_exponent = compute_optimal_allocation(
             thompson_samp_portfolio,
             odds,
@@ -70,10 +70,7 @@ def simulate(
     for i, estimate in enumerate(estimates):
         log.info('%i: %f, %f, %f' % (i, estimate, probabilities[i], odds[i]))
 
-    thompson_samp_cgr = cgr(initial_wealth, thompson_samp_portfolio.wealth, num_races)
-    optimal_cgr = cgr(initial_wealth, optimal_portfolio.wealth, num_races)
-
-    return thompson_samp_portfolio_history, optimal_portfolio_history, thompson_samp_cgr, optimal_cgr
+    return thompson_samp_portfolio_history, optimal_portfolio_history, thompson_samp_portfolio, optimal_portfolio
 
 
 def race_result(probabilities):
