@@ -47,7 +47,7 @@ build() {
     "${IMAGE_NAME}" flake8 --ignore=E501 ${CONTAINER_CODE}
 #  docker run \
 #    --volume "${HOST_CODE}:${CONTAINER_CODE}" \
-#    "${IMAGE_NAME}" pytest -rxXs --cov canva_analytics ${CONTAINER_CODE}
+#    "${IMAGE_NAME}" pytest -rxXs --cov core ${CONTAINER_CODE}
   popd
 }
 
