@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy.random import choice
 from core.kelly import compute_optimal_allocation
-from core.portfolio import BayesianUpdatePortfolio, OptimalPortfolio
+from core.portfolio import BayesianUpdatePortfolio, OptimalPortfolio, UniformAllocationPortfolio
 
 
 def plot_wealth(bayesian_update_portfolio_history, optimal_portfolio_history, num_races):
@@ -21,9 +21,11 @@ def plot_wealth(bayesian_update_portfolio_history, optimal_portfolio_history, nu
 def simulate(initial_wealth, probabilities, odds, num_races, burn_in_period, log):
     bayesian_update_portfolio = BayesianUpdatePortfolio(len(odds), initial_wealth)
     optimal_portfolio = OptimalPortfolio(len(odds), initial_wealth)
+    uniform_portfolio = UniformAllocationPortfolio(len(odds), initial_wealth)
 
     bayesian_update_portfolio_history = []
     optimal_portfolio_history = []
+    uniform_portfolio_history = []
     total_trials = num_races + burn_in_period
     for trial in range(total_trials):
         log.info("Race: %d" % (trial + 1))
@@ -41,13 +43,16 @@ def simulate(initial_wealth, probabilities, odds, num_races, burn_in_period, log
         log.info("Horse %d wins" % win_index)
         bayesian_update_portfolio.update(win_index)
         optimal_portfolio.update(win_index)
+        uniform_portfolio.update(win_index)
 
         if trial > burn_in_period:
             bayesian_update_portfolio.update_wealth(win_index, odds, log)
             optimal_portfolio.update_wealth(win_index, odds, log)
+            uniform_portfolio.update_wealth(win_index, odds, log)
 
             bayesian_update_portfolio_history.append(bayesian_update_portfolio.wealth)
             optimal_portfolio_history.append(optimal_portfolio.wealth)
+            uniform_portfolio_history.append(uniform_portfolio.wealth)
 
     log.info("------------------------------------------------")
     log.info("estimate, true, odds")
@@ -58,8 +63,10 @@ def simulate(initial_wealth, probabilities, odds, num_races, burn_in_period, log
     return (
         bayesian_update_portfolio_history,
         optimal_portfolio_history,
+        uniform_portfolio_history,
         bayesian_update_portfolio,
         optimal_portfolio,
+        uniform_portfolio,
     )
 
 

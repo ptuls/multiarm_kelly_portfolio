@@ -55,3 +55,8 @@ class BayesianUpdatePortfolio(Portfolio):
 class OptimalPortfolio(Portfolio):
     def __init__(self, num_sources, initial_wealth):
         super(OptimalPortfolio, self).__init__(num_sources, initial_wealth, "optimal")
+
+
+class UniformAllocationPortfolio(Portfolio):
+    def __init__(self, num_sources, initial_wealth):
+        super(UniformAllocationPortfolio, self).__init__(num_sources, initial_wealth, "uniform")
